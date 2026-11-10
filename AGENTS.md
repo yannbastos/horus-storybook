@@ -2,6 +2,8 @@
 
 Este repositório é o laboratório visual React/Storybook do HORUS. O aplicativo C#/Avalonia está em outro repositório: https://github.com/yannbastos/horus.
 
+Leia [CARTA-AO-CODEX.md](CARTA-AO-CODEX.md) para o planejamento audiovisual sobre Hermes. A próxima entrega é diagnóstico de integração na máquina principal, sem implementar interface ou alterar o motor.
+
 - Leia o README antes de alterar. Mantenha documentação em pt-BR.
 - Use tokens de `src/horus/tokens.css`, fontes locais e temas claro/escuro/sistema.
 - Preserve acessibilidade, responsividade e `prefers-reduced-motion`.
