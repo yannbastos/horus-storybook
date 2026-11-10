@@ -8,6 +8,8 @@ Leia [a carta central](https://github.com/yannbastos/horus/blob/docs/planejament
 
 A primeira entrega é diagnóstico Hermes–fábrica na máquina principal. **Não começar redesenhando a interface, instalando dependências ou conectando componentes a um backend presumido.**
 
+O planejamento foi ampliado para [operação híbrida VPS–PC](https://github.com/yannbastos/horus/blob/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento/ARQUITETURA-HIBRIDA.md). Quando uma interface operacional for aprovada, distinguir PC indisponível, aguardando aprovação, pedido de cancelamento e término confirmado; não mostrar progresso ou métricas inventados. Os [contratos e limites](https://github.com/yannbastos/horus/blob/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento/CONTRATOS.md) ainda são propostas, não backend pronto. Não é necessário alterar telas nesta preparação.
+
 Base auditada: `b03f90a`. Preserve tokens, acessibilidade, fontes e distinção entre demonstração e funcionalidade. O destino do Avalonia e a stack final ainda precisam ser confirmados. Não fundir repositórios ou portar telas automaticamente.
 
 Este documento foi publicado na branch `docs/planejamento-horus-hermes-2026-11-10`. A publicação não implementa a plataforma nem autoriza futuras mudanças de produto.
