@@ -1,15 +1,9 @@
-# Carta ao próximo Codex — laboratório visual
+# Continuidade — catálogo audiovisual
 
-Contexto de 2026-11-10. O usuário escolheu evoluir Hórus para uma plataforma de inteligência audiovisual sobre Hermes Agent, sem fork inicial, com fábrica Python independente.
+Este repositório contém apenas demonstrações de design para o Hórus, plataforma de inteligência e operação audiovisual. Não contém backend, Radar real, Hermes conectado ou execução da fábrica.
 
-Este repositório continua sendo o catálogo de design React/Storybook. Seus componentes e identidade podem ser reaproveitados depois de definir a interface. Não há dashboard operacional, integração Hermes ou backend implementados aqui.
+A direção oficial é React/TypeScript + Tauri 2, FastAPI e SQLite, com fábrica/CLI/Remotion independente e Hermes externo sem fork. A transcrição Avalonia permanece preservada no repositório do app durante a migração.
 
-Leia [a carta central](https://github.com/yannbastos/horus/blob/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento/CARTA-AO-CODEX.md) e o [planejamento](https://github.com/yannbastos/horus/tree/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento).
+O usuário autorizou retirar propostas anteriores e usar exclusivamente exemplos de mídia, fila de produção, briefings, roteiros e canais. Preserve identidade, fontes, tokens, responsividade e acessibilidade; não executar serviços pagos ou criar funcionalidades operacionais neste catálogo.
 
-A primeira entrega é diagnóstico Hermes–fábrica na máquina principal. **Não começar redesenhando a interface, instalando dependências ou conectando componentes a um backend presumido.**
-
-O planejamento foi ampliado para [operação híbrida VPS–PC](https://github.com/yannbastos/horus/blob/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento/ARQUITETURA-HIBRIDA.md). Quando uma interface operacional for aprovada, distinguir PC indisponível, aguardando aprovação, pedido de cancelamento e término confirmado; não mostrar progresso ou métricas inventados. Os [contratos e limites](https://github.com/yannbastos/horus/blob/docs/planejamento-horus-hermes-2026-11-10/docs/planejamento/CONTRATOS.md) ainda são propostas, não backend pronto. Não é necessário alterar telas nesta preparação.
-
-Base auditada: `b03f90a`. Preserve tokens, acessibilidade, fontes e distinção entre demonstração e funcionalidade. O destino do Avalonia e a stack final ainda precisam ser confirmados. Não fundir repositórios ou portar telas automaticamente.
-
-Este documento foi publicado na branch `docs/planejamento-horus-hermes-2026-11-10`. A publicação não implementa a plataforma nem autoriza futuras mudanças de produto.
+Consulte a [continuidade central](https://github.com/yannbastos/horus/blob/master/docs/planejamento/CARTA-AO-CODEX.md). Valide build, lint e build-storybook. Dados, progresso e prazos são fictícios e devem permanecer identificados como demonstração.

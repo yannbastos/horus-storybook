@@ -1,2 +1,3 @@
 export const statuses = ['PENDENTE', 'EM ANDAMENTO', 'CONCLUÍDO'] as const;
-export const cards = Array.from({ length: 6 }, (_, i) => ({ number: String(i + 1).padStart(2, '0'), title: `Item de exemplo ${String.fromCharCode(65 + i)}`, description: i === 2 ? 'Um texto maior para testar como a descrição se comporta em duas linhas.' : 'Descrição curta deste item', status: statuses[i % 3], meta: ['Atualizado hoje', 'Atualizado ontem', 'Atualizado há 3 dias'][i % 3] }));
+const titles = ['Pauta: transformação urbana', 'Roteiro: o oceano profundo', 'Entrega: energia do futuro', 'Short: um detalhe invisível', 'Narração: caminhos da ciência', 'Revisão: cidades do amanhã'];
+export const cards = titles.map((title, i) => ({ number: String(i + 1).padStart(2, '0'), title, description: 'Produção fictícia para avaliar componentes e estados do catálogo audiovisual.', status: statuses[i % 3], meta: 'DEMONSTRAÇÃO · SEM EXECUÇÃO REAL' }));

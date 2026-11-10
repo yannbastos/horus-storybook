@@ -6,11 +6,11 @@ Catálogo independente em React, TypeScript e Storybook para explorar identidade
 
 ## Papel deste repositório
 
-Este é um laboratório de interface, não o aplicativo operacional. As histórias atuais ainda incluem demonstrações da proposta original de estudos. Elas servem como referência de design; não há Radar, produção, Hermes ou analytics conectados aqui.
+Este é um laboratório de interface, não o aplicativo operacional. As histórias apresentam exemplos de produções, fila e briefing audiovisual com dados fictícios. Elas servem como referência de design; não há Radar, produção, Hermes ou analytics conectados aqui.
 
-O desktop atual usa C#/Avalonia. A primeira prévia audiovisual do desktop está na [branch de layout do Hórus](https://github.com/yannbastos/horus/tree/feat/layout-desktop-audiovisual), não neste catálogo. Componentes React não são incorporados automaticamente ao executável C#.
+O desktop principal usa React/TypeScript e Tauri 2 com backend FastAPI/SQLite. O Avalonia permanece para transcrição durante a migração. Este catálogo é separado da interface operacional.
 
-O planejamento da plataforma preserva [a fábrica Python independente](https://github.com/yannbastos/fabrica-canais) e [a base de estudos](https://github.com/yannbastos/estudos-videos-claude). Uma eventual migração da interface precisa ser decidida e validada; este repositório não comprova essa migração.
+A produção será executada pela [fábrica Python independente](https://github.com/yannbastos/fabrica-canais). O catálogo não executa operações reais nem contém backend de produção.
 
 ## Executar
 
@@ -27,10 +27,10 @@ Abra http://localhost:6006. A barra superior oferece Sistema, Claro e Escuro. O 
 - **Fundamentos:** paleta, tipografia e temas lado a lado.
 - **Componentes:** botões, estados, tag, card e faixa de abertura.
 - **Movimento:** olho orbital com entrada finita e versão estática.
-- **Telas:** Início, Lista, Leitura, Ajustes e aplicativo navegável.
+- **Telas:** Início, Produção, Briefing, Ajustes e aplicativo navegável.
 - **Site:** proposta visual, sem publicação ou funcionalidades prometidas.
 
-Os dados são fictícios. Busca, filtros, navegação e controles são interações locais de demonstração, sem banco de dados. As ações de estudo não executam operações reais.
+Os dados são fictícios. Busca, filtros, navegação e controles são interações locais de demonstração, sem banco de dados. Os botões não acionam a fábrica ou serviços pagos.
 
 ## Verificar e gerar
 
@@ -46,7 +46,7 @@ O catálogo estático fica em `storybook-static/`. `npm run dev` abre o protóti
 
 1. Comparar as histórias nos temas claro/escuro e em larguras diferentes.
 2. Ajustar componentes e documentar decisões aprovadas.
-3. Adaptar explicitamente para AXAML/C#; React não é incorporado ao aplicativo.
+3. Adaptar explicitamente à interface React do aplicativo; não há sincronização automática.
 
 A paleta inicial em `src/horus/tokens.css` foi extraída de `HORUS App/src/Horus/Theme/Tokens.axaml`. Depois disso, mudanças não são sincronizadas automaticamente. O AXAML continua sendo a fonte dos tokens do app; este catálogo é o ambiente de experimentação.
 
@@ -61,6 +61,6 @@ A auditoria inicial apontou quatro avisos moderados na cadeia de desenvolvimento
 ## Repositórios
 
 - Catálogo: https://github.com/yannbastos/horus-storybook
-- Aplicativo C#/Avalonia: https://github.com/yannbastos/horus
+- Aplicativo audiovisual: https://github.com/yannbastos/horus
 
 O catálogo fica separado do aplicativo, na pasta `HORUS Storybook`. Não depende de arquivos externos para executar ou gerar os builds.

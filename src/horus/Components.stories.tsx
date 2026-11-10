@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, StudyCard, Tag, Hero } from './Horus';
+import { Button, ProductionCard, Tag, Hero } from './Horus';
 import { cards } from './data';
 const meta={title:'Componentes/Botão',component:Button,tags:['autodocs'],args:{children:'AÇÃO PRINCIPAL',variant:'primary'},argTypes:{variant:{control:'select',options:['primary','secondary']},disabled:{control:'boolean'}},parameters:{layout:'centered'}} satisfies Meta<typeof Button>;
 export default meta;
@@ -7,5 +7,5 @@ export const Principal: StoryObj<typeof meta>={};
 export const Secundario: StoryObj<typeof meta>={args:{variant:'secondary',children:'AÇÃO SECUNDÁRIA'}};
 export const Desativado: StoryObj<typeof meta>={args:{disabled:true}};
 export const Estados: StoryObj<typeof meta>={render:()=> <div className="component-gallery"><Button variant="primary">PRINCIPAL</Button><Button>SECUNDÁRIO</Button><Button disabled>DESATIVADO</Button><Tag>PENDENTE</Tag></div>};
-export const Card: StoryObj={render:()=> <div style={{width:'min(350px,90vw)',border:'1px solid var(--Line)'}}><StudyCard {...cards[0]}/></div>};
+export const Card: StoryObj={render:()=> <div style={{width:'min(350px,90vw)',border:'1px solid var(--Line)'}}><ProductionCard {...cards[0]}/></div>};
 export const FaixaDeAbertura: StoryObj={parameters:{layout:'fullscreen'},render:()=> <div className="page"><Hero/></div>};
