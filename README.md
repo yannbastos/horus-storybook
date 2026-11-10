@@ -1,6 +1,16 @@
-# HORUS — Laboratório de design
+# Hórus — laboratório de design
 
-Catálogo React + TypeScript + Storybook para decidir o visual antes de adaptar ao aplicativo Avalonia e ao futuro site. Não substitui o app C#.
+**Componentes e referências visuais para a plataforma de inteligência audiovisual Hórus.**
+
+Catálogo independente em React, TypeScript e Storybook para explorar identidade, temas, tipografia, componentes e navegação. O produto e sua implementação desktop estão no repositório [Hórus](https://github.com/yannbastos/horus).
+
+## Papel deste repositório
+
+Este é um laboratório de interface, não o aplicativo operacional. As histórias atuais ainda incluem demonstrações da proposta original de estudos. Elas servem como referência de design; não há Radar, produção, Hermes ou analytics conectados aqui.
+
+O desktop atual usa C#/Avalonia. A primeira prévia audiovisual do desktop está na [branch de layout do Hórus](https://github.com/yannbastos/horus/tree/feat/layout-desktop-audiovisual), não neste catálogo. Componentes React não são incorporados automaticamente ao executável C#.
+
+O planejamento da plataforma preserva [a fábrica Python independente](https://github.com/yannbastos/fabrica-canais) e [a base de estudos](https://github.com/yannbastos/estudos-videos-claude). Uma eventual migração da interface precisa ser decidida e validada; este repositório não comprova essa migração.
 
 ## Executar
 
