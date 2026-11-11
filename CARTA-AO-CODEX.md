@@ -6,4 +6,4 @@ A direção oficial é React/TypeScript + Tauri 2, FastAPI e SQLite, com fábric
 
 O usuário autorizou retirar propostas anteriores e usar exclusivamente exemplos de mídia, fila de produção, briefings, roteiros e canais. Preserve identidade, fontes, tokens, responsividade e acessibilidade; não executar serviços pagos ou criar funcionalidades operacionais neste catálogo.
 
-Consulte a [continuidade central](https://github.com/yannbastos/horus/blob/master/docs/planejamento/CARTA-AO-CODEX.md). Valide build, lint e build-storybook. Dados, progresso e prazos são fictícios e devem permanecer identificados como demonstração.
+Consulte a [continuidade central](https://github.com/yannbastos/horus/blob/main/docs/planejamento/CARTA-AO-CODEX.md). Valide build, lint e build-storybook. Dados, progresso e prazos são fictícios e devem permanecer identificados como demonstração.
