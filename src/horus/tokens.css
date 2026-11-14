@@ -1,3 +1,33 @@
+:root {
+  /* Tipografia canônica */
+  --FontDisplay: Archivo, Inter, sans-serif;
+  --FontSans: Inter, sans-serif;
+  --FontMono: Geist, monospace;
+  --TextXs: 9px;
+  --TextSm: 10px;
+  --TextCode: 11px;
+  --TextMeta: 12px;
+  --TextBody: 14px;
+  --TextH4: 15px;
+  --TextH3: 17px;
+  --TextH2: 21px;
+  --TextH1: 26px;
+
+  /* Escala de espaçamento */
+  --Space1: 4px;
+  --Space2: 6px;
+  --Space3: 8px;
+  --Space4: 10px;
+  --Space5: 12px;
+  --Space6: 14px;
+  --Space7: 16px;
+  --Space8: 20px;
+  --Space9: 24px;
+  --Space10: 28px;
+  --Space11: 32px;
+  --Space12: 36px;
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
   --Background: #111122;

@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  CenterFiltersAndNoticeDemo,
   FailureDiagnosticsPanelDemo,
+  FirstVideoGuideDemo,
   LicenseProvenancePanelDemo,
+  ProductionComparePanelDemo,
+  ProductionExportPanelDemo,
+  ProductionLaunchOptionsDemo,
   ProductionProgressPanelDemo,
   QualityReportPanelDemo,
+  ScriptComparePanelDemo,
   ScriptEditorPanel,
+  TimecodeReviewWorkspaceDemo,
   VoicePreviewRowPanel,
 } from './FlowComponents';
 import type { OperationalState } from './Horus';
@@ -29,7 +36,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Componentes do fluxo completo (Editor de Roteiro, Linha de Voz com Prévia, Painel de QC, Painel de Licenças, Progresso da Produção e Bloco de Diagnóstico de Falha) nos 4 estados operacionais, usando a mesma fonte de tokens e tipografia do app.',
+          'Todos os componentes do fluxo completo de produção audiovisual (Guia do Primeiro Vídeo, Filtros e Avisos da Central, Editor de Roteiro, Comparação de Versões de Roteiro, Linha de Voz com Prévia, Opções de Lançamento da Produção, Progresso de 7 Etapas, Painel de QC, Painel de Licenças, Revisão por Timecode/Palavras, Comparação de Produções/Glossário, Exportação Auditável ZIP e Diagnóstico de Falha) nos 4 estados operacionais, alinhados ao StatusMessage e aos tokens de tokens.css.',
       },
     },
   },
@@ -103,15 +110,99 @@ export const DiagnosticoDeFalhaQuatroEstados: StoryObj<typeof meta> = {
   ),
 };
 
+export const GuiaPrimeiroVideoQuatroEstados: StoryObj<typeof meta> = {
+  name: '7. Guia Meu Primeiro Vídeo (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <FirstVideoGuideDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const FiltrosCentralEAvisosQuatroEstados: StoryObj<typeof meta> = {
+  name: '8. Filtros da Central e Avisos de Produção (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <CenterFiltersAndNoticeDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const ComparacaoVersoesRoteiroQuatroEstados: StoryObj<typeof meta> = {
+  name: '9. Comparar Versões do Roteiro (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <ScriptComparePanelDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const OpcoesLancamentoProducaoQuatroEstados: StoryObj<typeof meta> = {
+  name: '10. Voz e Qualidade do Piloto Local (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <ProductionLaunchOptionsDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const RevisaoPorTimecodeEPalavrasQuatroEstados: StoryObj<typeof meta> = {
+  name: '11. Revisão por Timecode e Linha de Palavras (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <TimecodeReviewWorkspaceDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const ComparacaoProducoesEGlossarioQuatroEstados: StoryObj<typeof meta> = {
+  name: '12. Comparação de Produções e Glossário (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <ProductionComparePanelDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
+export const ExportacaoAuditavelPacoteQuatroEstados: StoryObj<typeof meta> = {
+  name: '13. Exportação Auditável — Thumbnail, Metadados e ZIP (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <ProductionExportPanelDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
 export const FluxoCompletoPorEstado: StoryObj<typeof meta> = {
-  name: '7. Fluxo Completo Interativo por Estado (Controls)',
+  name: '14. Fluxo Completo Interativo por Estado (Controls)',
   render: ({ state = 'success' }) => (
     <div className="page">
+      <FirstVideoGuideDemo state={state} />
+      <CenterFiltersAndNoticeDemo state={state} />
       <ScriptEditorPanel state={state} />
+      <ScriptComparePanelDemo state={state} />
       <VoicePreviewRowPanel state={state} />
+      <ProductionLaunchOptionsDemo state={state} />
       <ProductionProgressPanelDemo state={state} />
       <QualityReportPanelDemo state={state} />
       <LicenseProvenancePanelDemo state={state} />
+      <TimecodeReviewWorkspaceDemo state={state} />
+      <ProductionComparePanelDemo state={state} />
+      <ProductionExportPanelDemo state={state} />
       <FailureDiagnosticsPanelDemo state={state} />
     </div>
   ),

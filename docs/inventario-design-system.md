@@ -8,8 +8,8 @@ Este documento registra o diagnóstico inicial do catálogo visual (`horus-story
 
 ## 1. Papel e Fronteira entre os Repositórios
 
-- **Fonte operacional vigente da identidade**: `horus/frontend/src/styles/tokens.css` e `horus/frontend/src/styles/app.css` (derivados originalmente de `src/Horus/Theme/Tokens.axaml`).
-- **Papel do `horus-storybook`**: laboratório independente em React 19 + TypeScript + Storybook 10 para catalogar componentes, inspecionar os temas `light`, `dark` e `system`, validar os 4 estados operacionais com dados fictícios e auditar acessibilidade (`@storybook/addon-a11y`) sem conexão com backend, fábrica ou serviços externos.
+- **Fonte operacional vigente da identidade**: `horus/frontend/src/styles/tokens.css`, `horus/frontend/src/styles/app.css` e os componentes React em `horus/frontend/src/components/` (o legado C#/Avalonia foi removido do repositório principal em `cd365b1`, HOR-010).
+- **Papel do `horus-storybook`**: laboratório independente em React 19 + TypeScript + Storybook 10 para catalogar componentes, inspecionar os temas `light`, `dark` e `system`, validar os 4 estados operacionais (`loading`, `error`, `empty`, `success` — alinhados com `StatusMessage.tsx`) com dados fictícios e auditar acessibilidade (`@storybook/addon-a11y`) sem conexão com backend, fábrica ou serviços externos.
 
 ---
 
@@ -49,11 +49,24 @@ Ambos os repositórios utilizam a mesma tríade tipográfica local (`Archivo Exp
 | `.tag` | `11px`, apenas variante neutra | `500 9px/1.45 Geist, monospace`, `letter-spacing: 1.2px`, com `.good`, `.warn`, `.bad`, `.simulated`, `.demo` | Variantes semânticas de status estavam ausentes no Storybook |
 | `.button` | `padding: 10px 18px`, sem `min-height` explícito | `padding: 9px 20px`, `min-height: 36px`, `letter-spacing: 1.2px` | `min-height: 36px` no app garante alvo de clique consistente |
 
-### 2.3. Espaçamento, Bordas e Movimento
+### 2.3. Tokens de Tipografia e Escala de Espaçamento (`:root` em `tokens.css`)
 
-- **Geometria**: cantos retos (`border-radius: 0` em botões, inputs, cards e tags) e linhas finas (`1px solid var(--Line)`).
-- **Destaques de severidade**: no app operacional, banners de prontidão e bloqueadores usam `border-left: 3px solid var(--Good | --Warn | --Bad)` para sinalizar severidade sem depender apenas de cor no texto.
-- **Movimento**: transições curtas (`0.14s ease`) e desativação integral sob `@media (prefers-reduced-motion: reduce)`.
+Além dos 14 tokens de cor por tema, `tokens.css` documenta formalmente a tríade tipográfica, a escala de texto e a escala de espaçamento:
+
+- **Famílias tipográficas**:
+  - `--FontDisplay: Archivo, Inter, sans-serif` (títulos `h1`–`h4` e marca `HORUS`)
+  - `--FontSans: Inter, sans-serif` (corpo de leitura, roteiros e transcrições)
+  - `--FontMono: Geist, monospace` (`.eyebrow`, `.tag`, `.button`, hashes SHA-256, timecodes e `.logs`)
+- **Escala tipográfica**:
+  - `--TextH1: 26px` · `--TextH2: 21px` · `--TextH3: 17px` · `--TextH4: 15px`
+  - `--TextBody: 14px` · `--TextMeta: 12px` · `--TextCode: 11px` · `--TextSm: 10px` · `--TextXs: 9px`
+- **Escala de espaçamento**:
+  - `--Space1: 4px` · `--Space2: 6px` · `--Space3: 8px` · `--Space4: 10px` · `--Space5: 12px` · `--Space6: 14px`
+  - `--Space7: 16px` · `--Space8: 20px` · `--Space9: 24px` · `--Space10: 28px` · `--Space11: 32px` · `--Space12: 36px`
+- **Geometria e movimento**:
+  - Cantos retos (`border-radius: 0` em botões, inputs, cards e tags) e linhas finas (`1px solid var(--Line)`).
+  - Destaques de severidade com `border-left: 3px solid var(--Good | --Warn | --Bad)`.
+  - Transições curtas (`0.14s ease`) e desativação integral sob `@media (prefers-reduced-motion: reduce)`.
 
 ---
 
@@ -101,6 +114,27 @@ No segundo incremento (`FlowComponents.tsx` / `FlowComponents.stories.tsx`), tod
    - Trilha horizontal das 7 etapas (`Preparação`, `Narração`, `Cenas`, `Legendas`, `Render`, `Qualidade (QC)`, `Revisão`) com tempo decorrido e último evento do job.
 6. **Bloco de Diagnóstico de Falha (`FailureDiagnosticsPanelDemo`)**:
    - Alerta acionável com `<details className="failure-diagnostics">`, metadados (`stage`, `code`, `duration`, `exit_code`), `stderr_tail` em `.logs` e cópia para a área de transferência.
+
+### 3.4. Incremento 3 — Alinhamento com `StatusMessage` e Cobertura Integral do Fluxo de Produção
+
+Neste incremento (`chore-hor-135-avalonia-cleanup-and-tokens`), o catálogo foi completado com:
+
+0. **Componente `StatusMessage` (`StatusMessage` / `StatusMessagePanel`)**:
+   - Paridade 1:1 com `horus/frontend/src/components/StatusMessage.tsx` nos 4 estados (`loading` com `role="status"` + `aria-live="polite"`, `error` com `role="alert"`, `empty` e `success`), modos inline (`<p>`) e em bloco (`eyebrow` em `.fact-item`), e tons `muted`, `good` e `plain`.
+7. **Guia Meu Primeiro Vídeo (`FirstVideoGuideDemo`)**:
+   - Checklist guiado das 4 etapas do primeiro vídeo (ambiente/voz, roteiro, produção e revisão) nos 4 estados operacionais.
+8. **Filtros da Central e Avisos de Produção (`CenterFiltersAndNoticeDemo`)**:
+   - Filtro por etapa/bloqueio e banner `.production-notice.{succeeded,failed,interrupted}` nos 4 estados.
+9. **Comparar Versões do Roteiro (`ScriptComparePanelDemo`)**:
+   - Comparação `v1 vs v2` com diff semântico de palavras (`.diff-added`, `.diff-removed`) e `.compare-grid` nos 4 estados.
+10. **Voz e Qualidade do Piloto Local (`ProductionLaunchOptionsDemo`)**:
+    - Seleção de provedor/voz local, tags de licença (`Apache-2.0`, uso comercial) e qualidade (`540×960` vs `1080×1920`) nos 4 estados.
+11. **Revisão por Timecode e Linha de Palavras (`TimecodeReviewWorkspaceDemo`)**:
+    - Navegação sincronizada por cenas, legendas, palavras (`word-timings.json`) e notas por segundo nos 4 estados.
+12. **Comparação de Produções e Glossário (`ProductionComparePanelDemo`)**:
+    - Tabela comparativa entre execuções (`.compare-row-changed`) e glossário técnico (`publishable`, `sha256`, `real_voice`, `speech_aligned`) nos 4 estados.
+13. **Exportação Auditável Local (`ProductionExportPanelDemo`)**:
+    - Geração de thumbnail `1080×1920`, metadados determinísticos com fontes/divulgações fixas e pacote ZIP verificado por SHA-256 nos 4 estados.
 
 ---
 

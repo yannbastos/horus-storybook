@@ -4,6 +4,7 @@ import {
   AlertBlockerPanel,
   FactItemPanel,
   OperationalDataTable,
+  StatusMessagePanel,
   StatusTagPanel,
 } from './Horus';
 import type { OperationalState } from './Horus';
@@ -35,6 +36,17 @@ const meta = {
 } satisfies Meta<typeof FactItemPanel>;
 
 export default meta;
+
+export const StatusMessageQuatroEstados: StoryObj<typeof meta> = {
+  name: '0. StatusMessage — Estados Operacionais (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <StatusMessagePanel key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
 
 export const TagsDeStatusQuatroEstados: StoryObj<typeof meta> = {
   name: '1. Tag e Status (4 estados)',
@@ -95,6 +107,7 @@ export const ControleInterativoPorEstado: StoryObj<typeof meta> = {
   name: '6. Visão Consolidada por Estado (Controls)',
   render: ({ state = 'success' }) => (
     <div className="page">
+      <StatusMessagePanel state={state} />
       <StatusTagPanel state={state} />
       <ActionButtonPanel state={state} />
       <FactItemPanel state={state} />
