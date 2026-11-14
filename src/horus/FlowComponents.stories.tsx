@@ -4,6 +4,7 @@ import {
   FailureDiagnosticsPanelDemo,
   FirstVideoGuideDemo,
   LicenseProvenancePanelDemo,
+  MediaLibraryPlayerDemo,
   ProductionComparePanelDemo,
   ProductionExportPanelDemo,
   ProductionLaunchOptionsDemo,
@@ -187,12 +188,24 @@ export const ExportacaoAuditavelPacoteQuatroEstados: StoryObj<typeof meta> = {
   ),
 };
 
+export const BibliotecaEPlayerDeMidiaQuatroEstados: StoryObj<typeof meta> = {
+  name: '14. Biblioteca de Mídia e Player Acessível — HOR-019 (4 estados)',
+  render: () => (
+    <div className="page">
+      {STATES.map(state => (
+        <MediaLibraryPlayerDemo key={state} state={state} />
+      ))}
+    </div>
+  ),
+};
+
 export const FluxoCompletoPorEstado: StoryObj<typeof meta> = {
-  name: '14. Fluxo Completo Interativo por Estado (Controls)',
+  name: '15. Fluxo Completo Interativo por Estado (Controls)',
   render: ({ state = 'success' }) => (
     <div className="page">
       <FirstVideoGuideDemo state={state} />
       <CenterFiltersAndNoticeDemo state={state} />
+      <MediaLibraryPlayerDemo state={state} />
       <ScriptEditorPanel state={state} />
       <ScriptComparePanelDemo state={state} />
       <VoicePreviewRowPanel state={state} />
