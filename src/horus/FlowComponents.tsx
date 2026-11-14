@@ -1,4 +1,4 @@
-import { Button, Tag } from './Horus';
+import { Button, StatusMessage, Tag } from './Horus';
 import type { OperationalState } from './Horus';
 
 const PRODUCTION_STAGES = [
@@ -688,9 +688,9 @@ export function FailureDiagnosticsPanelDemo({ state = 'error' }: { state?: Opera
       </div>
 
       {state === 'loading' && (
-        <div className="loading" role="status" aria-live="polite">
+        <StatusMessage state="loading">
           Reconciliando estado da produção e coletando <code>stderr_tail</code> do processo local…
-        </div>
+        </StatusMessage>
       )}
 
       {state === 'empty' && (
@@ -746,13 +746,592 @@ export function FailureDiagnosticsPanelDemo({ state = 'error' }: { state?: Opera
               <div className="actions">
                 <Button>Copiar diagnóstico</Button>
                 {state === 'success' && (
-                  <span className="good" role="status" aria-live="polite">
+                  <StatusMessage state="success" tone="good" ariaLive="polite">
                     Diagnóstico copiado para a área de transferência.
-                  </span>
+                  </StatusMessage>
                 )}
               </div>
             </div>
           </details>
+        </div>
+      )}
+    </section>
+  );
+}
+
+export function FirstVideoGuideDemo({ state = 'success' }: { state?: OperationalState }) {
+  const steps = [
+    {
+      id: 'environment',
+      title: 'Verificar ambiente e voz local',
+      detail: 'FFmpeg, fábrica, Remotion e motor de voz local prontos.',
+      status: state === 'error' ? 'pending' : 'done',
+      action: 'ABRIR AJUSTES',
+    },
+    {
+      id: 'script',
+      title: 'Escrever ou aprovar um roteiro',
+      detail: 'Roteiro v2 aprovado e pronto para produzir.',
+      status: state === 'empty' ? 'in_progress' : 'done',
+      action: 'IR PARA PRODUÇÃO',
+    },
+    {
+      id: 'production',
+      title: 'Executar uma produção local',
+      detail: 'Piloto local concluído com vídeo MP4 1080×1920.',
+      status: state === 'empty' ? 'pending' : state === 'error' ? 'pending' : 'done',
+      action: 'IR PARA PRODUÇÃO',
+    },
+    {
+      id: 'review',
+      title: 'Revisar e aprovar o vídeo',
+      detail:
+        state === 'success'
+          ? 'Revisão humana aprovada por hash SHA-256.'
+          : 'Inspecione o vídeo, o QC e as licenças antes de aprovar.',
+      status: state === 'success' ? 'done' : state === 'error' ? 'pending' : 'in_progress',
+      action: 'IR PARA PRODUÇÃO',
+    },
+  ] as const;
+
+  return (
+    <section
+      className="card guide-panel"
+      role="region"
+      aria-label={`Guia Meu primeiro vídeo (${state})`}
+    >
+      <div className="row spread">
+        <div>
+          <p className="eyebrow accent">GUIA RÁPIDO · MEU PRIMEIRO VÍDEO</p>
+          <h3>Meu primeiro vídeo</h3>
+          <StatusMessage
+            state={state === 'loading' ? 'loading' : state === 'error' ? 'error' : 'success'}
+            tone="muted"
+            style={{ padding: 0, border: 0, background: 'transparent' }}
+          >
+            {state === 'loading'
+              ? 'Verificando etapas…'
+              : state === 'error'
+                ? '1 de 4 passos concluídos — ambiente com pendência de ferramenta local.'
+                : state === 'empty'
+                  ? '1 de 4 passos concluídos.'
+                  : '4 de 4 passos concluídos.'}
+          </StatusMessage>
+        </div>
+        <div className="actions">
+          {state === 'success' && <Button>OCULTAR GUIA</Button>}
+          <Button aria-expanded={state !== 'loading'}>RECOLHER</Button>
+        </div>
+      </div>
+
+      {state !== 'loading' && (
+        <ol className="guide-steps" aria-label={`Passos do guia (${state})`}>
+          {steps.map((step, idx) => {
+            const isCurrent =
+              (state === 'empty' && idx === 1) ||
+              (state === 'error' && idx === 0);
+            const tone =
+              step.status === 'done'
+                ? 'good'
+                : step.status === 'in_progress'
+                  ? 'simulated'
+                  : 'warn';
+            const statusLabel =
+              step.status === 'done'
+                ? 'Concluído'
+                : step.status === 'in_progress'
+                  ? 'Em andamento'
+                  : 'Pendente';
+            return (
+              <li
+                key={step.id}
+                className={`guide-step${isCurrent ? ' current' : ''}`}
+                aria-current={isCurrent ? 'step' : undefined}
+              >
+                <div className="guide-step-info">
+                  <span className="eyebrow muted">{idx + 1}.</span>
+                  <div>
+                    <strong>{step.title}</strong>
+                    <p className="muted small-text">{step.detail}</p>
+                  </div>
+                </div>
+                <div className="guide-step-actions">
+                  <Tag tone={tone}>{statusLabel}</Tag>
+                  <Button>{step.action}</Button>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </section>
+  );
+}
+
+export function CenterFiltersAndNoticeDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="card"
+      role="region"
+      aria-label={`Filtros da Central e avisos de produção (${state})`}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">CENTRAL DE PRODUÇÃO · FILTROS E AVISOS GLOBAIS</span>
+          <h3>Filtragem por etapa, bloqueios humanos e notificação de término</h3>
+        </div>
+        <Tag>{state.toUpperCase()}</Tag>
+      </div>
+
+      {state !== 'loading' && (
+        <div
+          className={`production-notice ${
+            state === 'error' ? 'failed' : state === 'empty' ? 'interrupted' : 'succeeded'
+          }`}
+          role={state === 'error' ? 'alert' : 'status'}
+        >
+          <div>
+            <span className="eyebrow">
+              {state === 'error'
+                ? 'PRODUÇÃO FALHOU (RENDER)'
+                : state === 'empty'
+                  ? 'PRODUÇÃO INTERROMPIDA'
+                  : 'PRODUÇÃO CONCLUÍDA'}
+            </span>
+            <p className="muted">
+              {state === 'error'
+                ? 'A execução prod_03 encerrou com falha técnica. Abra a revisão para inspecionar o diagnóstico.'
+                : state === 'empty'
+                  ? 'A execução prod_02 foi interrompida no reinício e aguarda conciliação humana.'
+                  : 'Vídeo MP4 de prod_01 pronto para revisão humana por hash SHA-256.'}
+            </p>
+          </div>
+          <div className="actions">
+            <Button variant="primary">Abrir revisão</Button>
+            <Button>Dispensar</Button>
+          </div>
+        </div>
+      )}
+
+      <div
+        className="row"
+        role="group"
+        aria-label={`Filtros da Central (${state})`}
+        style={{ gap: 'var(--Space7)', flexWrap: 'wrap' }}
+      >
+        <label className="row" style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <span className="eyebrow">ETAPA</span>
+          <select
+            aria-label={`Etapa filtrada (${state})`}
+            defaultValue={state === 'empty' ? 'review' : 'all'}
+            style={{ width: 'auto' }}
+          >
+            <option value="all">Todas as etapas</option>
+            <option value="proposal">Proposta</option>
+            <option value="script">Roteiro</option>
+            <option value="production">Produção</option>
+            <option value="review">Revisão humana</option>
+          </select>
+        </label>
+        <label className="row" style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <input
+            type="checkbox"
+            defaultChecked={state === 'error'}
+            style={{ width: 'auto' }}
+          />
+          <span>Somente com bloqueio (ação humana)</span>
+        </label>
+      </div>
+
+      {state === 'loading' && <StatusMessage state="loading">Carregando vídeos…</StatusMessage>}
+      {state === 'error' && (
+        <StatusMessage state="error">
+          Falha ao consultar fluxos na Central de Produção (500): verifique o backend local.
+        </StatusMessage>
+      )}
+      {state === 'empty' && (
+        <StatusMessage state="empty">Nenhum vídeo corresponde aos filtros.</StatusMessage>
+      )}
+      {state === 'success' && (
+        <StatusMessage state="success">
+          3 de 3 vídeo(s) exibido(s). A lista do backend é limitada a 100 fluxos.
+        </StatusMessage>
+      )}
+    </section>
+  );
+}
+
+export function ScriptComparePanelDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="card"
+      role="region"
+      aria-label={`Comparação de versões do roteiro (${state})`}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">COMPARAR VERSÕES DO ROTEIRO (HOR-088)</span>
+          <h3>v1 vs v2 · Diferenças palavra por palavra</h3>
+        </div>
+        <div className="row">
+          <Button active>Lado a lado</Button>
+          <Button>Em linha</Button>
+        </div>
+      </div>
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">
+          Calculando diferenças entre as versões v1 e v2 do roteiro…
+        </StatusMessage>
+      )}
+
+      {state === 'empty' && (
+        <StatusMessage state="empty" role="status">
+          É necessário ter pelo menos duas versões do roteiro para comparar alterações.
+        </StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <StatusMessage state="error">
+          Não foi possível carregar o histórico de versões do roteiro (404).
+        </StatusMessage>
+      )}
+
+      {state === 'success' && (
+        <>
+          <StatusMessage state="success">
+            <strong>Resumo:</strong> Título alterado · 1 seção(ões) alterada(s)
+          </StatusMessage>
+          <div className="compare-grid">
+            <div className="fact-item">
+              <span className="eyebrow muted">Base (v1 · Gerado pela simulação)</span>
+              <strong> GANCHO · Abertura</strong>
+              <p>
+                O Hórus sincroniza <del className="diff-removed">aproximadamente cada frase</del>{' '}
+                da narração local antes de montar as cenas.
+              </p>
+            </div>
+            <div className="fact-item">
+              <span className="eyebrow muted">Comparada (v2 · Escrito por você · Aprovado)</span>
+              <strong> GANCHO · Abertura</strong>
+              <p>
+                O Hórus sincroniza{' '}
+                <ins className="diff-added">a duração real medida de cada seção</ins> da narração
+                local antes de montar as cenas.
+              </p>
+            </div>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+export function ProductionLaunchOptionsDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="fact-item"
+      role="region"
+      aria-label={`Voz e qualidade da produção (${state})`}
+      style={{ background: 'var(--Background)' }}
+    >
+      <div className="row spread">
+        <span className="eyebrow accent">VOZ E QUALIDADE DO PILOTO LOCAL · {state.toUpperCase()}</span>
+        <Tag tone="demo">PILOTO LOCAL · TTS SINTÉTICO</Tag>
+      </div>
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">Carregando vozes disponíveis…</StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <StatusMessage state="error">
+          Não foi possível carregar as vozes (Falha ao conectar em /v1/narration/providers). A
+          produção usará a voz padrão do backend.
+        </StatusMessage>
+      )}
+
+      {state === 'empty' && (
+        <StatusMessage state="empty" role="status">
+          Nenhuma voz local disponível. A produção usará a voz padrão do backend; se ele não tiver
+          motor de voz, a execução ficará bloqueada.
+        </StatusMessage>
+      )}
+
+      {state === 'success' && (
+        <>
+          <div className="form-row">
+            <label>
+              Provedor de voz
+              <select aria-label="Provedor de voz (demo)" defaultValue="kokoro">
+                <option value="kokoro">Kokoro-82M (Local)</option>
+                <option value="windows_sapi">Windows SAPI (Vozes do sistema)</option>
+              </select>
+            </label>
+            <label>
+              Voz
+              <select aria-label="Voz da narração (demo)" defaultValue="pf_dora">
+                <option value="pf_dora">Dora (pt-BR)</option>
+                <option value="pm_alex">Alex (pt-BR)</option>
+              </select>
+            </label>
+          </div>
+          <div className="row" style={{ flexWrap: 'wrap' }}>
+            <Tag tone="good">Uso comercial: permitido</Tag>
+            <Tag>Licença da voz: Apache-2.0</Tag>
+            <Tag>Licença do motor: Apache-2.0</Tag>
+          </div>
+          <label>
+            Qualidade do vídeo
+            <select aria-label="Qualidade da renderização (demo)" defaultValue="final">
+              <option value="draft">Rascunho 540×960</option>
+              <option value="final">Final 1080×1920</option>
+            </select>
+          </label>
+          <small className="muted">
+            Tempo estimado (final 1080×1920): referência de ensaios locais ≈ 140 a 160 s no total.
+          </small>
+        </>
+      )}
+    </section>
+  );
+}
+
+export function TimecodeReviewWorkspaceDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="fact-item"
+      role="region"
+      aria-label={`Revisão e navegação por timecode (${state})`}
+      style={{ background: 'var(--Background)' }}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">
+            REVISÃO AUDIOVISUAL POR TIMECODE (CONTRATO 1 E CONTRATO 4)
+          </span>
+          <h3>Navegação por cenas, legendas, palavras e notas por tempo</h3>
+        </div>
+        <div className="row">
+          <Tag tone="simulated">TIMECODE ATUAL: 00:04.20 (4.20s)</Tag>
+          <Tag tone={state === 'success' ? 'good' : 'warn'}>
+            {state === 'success' ? 'speech_aligned: true' : 'speech_aligned: false'}
+          </Tag>
+        </div>
+      </div>
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">
+          Carregando <code>word-timings.json</code>, cenas e segmentos de legenda…
+        </StatusMessage>
+      )}
+
+      {state === 'empty' && (
+        <StatusMessage state="empty" role="status">
+          Nenhuma cena, legenda ou palavra sincronizada registrada para esta execução.
+        </StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <StatusMessage state="error">
+          O texto da nota por timecode deve ter entre 1 e 2000 caracteres (Contrato 4).
+        </StatusMessage>
+      )}
+
+      {state === 'success' && (
+        <>
+          <div className="info-grid">
+            <div className="info-block">
+              <span className="eyebrow">NAVEGAR POR CENAS (3)</span>
+              <div className="stack">
+                <Button style={{ padding: '6px 10px', minHeight: 30, fontSize: 10, textAlign: 'left' }}>
+                  00:00.00 → 00:05.00 · Cena 1: Gancho
+                </Button>
+                <Button
+                  active
+                  style={{ padding: '6px 10px', minHeight: 30, fontSize: 10, textAlign: 'left' }}
+                >
+                  00:05.00 → 00:10.00 · Cena 2: Desenvolvimento
+                </Button>
+              </div>
+            </div>
+            <div className="info-block">
+              <span className="eyebrow">LINHA DO TEMPO DE PALAVRAS (WORD-TIMINGS.JSON)</span>
+              <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
+                <Button style={{ padding: '4px 8px', minHeight: 26, fontSize: 10 }}>
+                  00:03.80 · mede
+                </Button>
+                <Button
+                  active
+                  style={{ padding: '4px 8px', minHeight: 26, fontSize: 10 }}
+                >
+                  00:04.20 · duração
+                </Button>
+                <Button style={{ padding: '4px 8px', minHeight: 26, fontSize: 10 }}>
+                  00:04.75 · real
+                </Button>
+              </div>
+              <small className="muted">
+                Nota marcada em 00:04.20: Conferir transição visual na entrada do segundo bloco.
+              </small>
+            </div>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+export function ProductionComparePanelDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="card"
+      role="region"
+      aria-label={`Comparação de produções e glossário (${state})`}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">COMPARAÇÃO DE EXECUÇÕES E GLOSSÁRIO TÉCNICO</span>
+          <h3>prod_01 vs prod_02 · Diferenças entre execuções do mesmo roteiro</h3>
+        </div>
+        <Tag>{state.toUpperCase()}</Tag>
+      </div>
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">
+          Carregando histórico de execuções deste roteiro para comparação…
+        </StatusMessage>
+      )}
+
+      {state === 'empty' && (
+        <StatusMessage state="empty" role="status">
+          Apenas uma produção registrada para este roteiro. Execute outra produção para comparar.
+        </StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <StatusMessage state="error">
+          Não foi possível carregar os metadados comparativos das produções selecionadas.
+        </StatusMessage>
+      )}
+
+      {state === 'success' && (
+        <>
+          <div className="data-table-container">
+            <table className="data-table" aria-label="Tabela comparativa de produções (demo)">
+              <thead>
+                <tr>
+                  <th scope="col">Campo</th>
+                  <th scope="col">Produção A (prod_01)</th>
+                  <th scope="col">Produção B (prod_02)</th>
+                  <th scope="col">Diferença</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Versão do roteiro</th>
+                  <td>v2</td>
+                  <td>v2</td>
+                  <td><Tag>Igual</Tag></td>
+                </tr>
+                <tr className="compare-row-changed">
+                  <th scope="row">Qualidade</th>
+                  <td>Rascunho (540×960)</td>
+                  <td>Final (1080×1920)</td>
+                  <td><Tag tone="warn">Alterado</Tag></td>
+                </tr>
+                <tr className="compare-row-changed">
+                  <th scope="row">Resumo do QC</th>
+                  <td><Tag tone="warn">Atenção (1 warn, 0 fail)</Tag></td>
+                  <td><Tag tone="good">Aprovado (0 fail, 0 warn)</Tag></td>
+                  <td><Tag tone="warn">Alterado</Tag></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <details open aria-label="Glossário dos termos técnicos">
+            <summary>O que significam estes termos?</summary>
+            <div className="info-grid" style={{ marginTop: 8 }}>
+              <div className="info-block">
+                <strong>Não publicável (<code>publishable</code>)</strong>
+                <small className="muted">
+                  O vídeo ainda não pode ser publicado: faltam licenças verificadas e a decisão de
+                  publicação não foi tomada.
+                </small>
+              </div>
+              <div className="info-block">
+                <strong>Impressão digital (<code>sha256</code>)</strong>
+                <small className="muted">
+                  Código de 64 caracteres que identifica exatamente o conteúdo de um arquivo; a
+                  aprovação fica presa a ele.
+                </small>
+              </div>
+            </div>
+          </details>
+        </>
+      )}
+    </section>
+  );
+}
+
+export function ProductionExportPanelDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="fact-item"
+      role="region"
+      aria-label={`Exportação auditável local (${state})`}
+      style={{ background: 'var(--Background)' }}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">EXPORTAÇÃO AUDITÁVEL LOCAL (HOR-099)</span>
+          <h3>Pacote para publicação manual (Thumbnail, Metadados e ZIP)</h3>
+        </div>
+        <Tag tone="demo">publishable: false</Tag>
+      </div>
+
+      {state === 'empty' && (
+        <StatusMessage state="empty" role="status">
+          Disponível somente após aprovação na revisão humana desta produção.
+        </StatusMessage>
+      )}
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">
+          Gerando pacote de exportação e verificando hashes SHA-256 dos artefatos…
+        </StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <StatusMessage state="error">
+          Conflito ao gerar pacote ZIP (409): a revisão ou os metadados mudaram. Tente exportar
+          novamente com a nova chave de idempotência.
+        </StatusMessage>
+      )}
+
+      {state === 'success' && (
+        <div className="stack">
+          <div className="info-grid">
+            <div className="info-block">
+              <span className="eyebrow">1. THUMBNAIL VERTICAL (1080×1920)</span>
+              <strong>render/thumbnail.png · render/thumbnail.jpg</strong>
+              <small className="muted">Extraída em 00:04.20 · SHA-256 verificado</small>
+            </div>
+            <div className="info-block">
+              <span className="eyebrow">2. METADADOS E DIVULGAÇÕES FIXAS</span>
+              <strong>Título + descrição + rodapé obrigatório</strong>
+              <small className="muted">Fontes citadas e aviso de voz sintética anexados</small>
+            </div>
+          </div>
+          <div className="row spread">
+            <StatusMessage state="success" tone="good" ariaLive="polite">
+              Pacote pronto para download (horus-pacote-prod_01.zip · 4,82 MB).
+            </StatusMessage>
+            <div className="actions">
+              <Button variant="primary">Baixar ZIP</Button>
+              <Button>Exportar pacote novamente</Button>
+            </div>
+          </div>
         </div>
       )}
     </section>

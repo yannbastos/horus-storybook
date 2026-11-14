@@ -1,6 +1,6 @@
 # Instruções para agentes
 
-Este repositório é o laboratório visual React/Storybook do HORUS. O aplicativo React/Tauri/FastAPI, com transcrição Avalonia preservada, está em outro repositório: https://github.com/yannbastos/horus.
+Este repositório é o laboratório visual React/Storybook do HORUS. O aplicativo operacional React/Tauri/FastAPI está em outro repositório: https://github.com/yannbastos/horus (o legado C#/Avalonia foi removido em `cd365b1`; a referência visual canônica agora é `frontend/src/styles/tokens.css` e os componentes React).
 
 Leia [CARTA-AO-CODEX.md](CARTA-AO-CODEX.md) para o planejamento audiovisual sobre Hermes. O usuário autorizou alinhar catálogo e aplicativo ao foco exclusivo audiovisual, preservando o design. Não conectar operações reais neste catálogo.
 
@@ -8,7 +8,7 @@ Leia [CARTA-AO-CODEX.md](CARTA-AO-CODEX.md) para o planejamento audiovisual sobr
 - Use tokens de `src/horus/tokens.css`, fontes locais e temas claro/escuro/sistema.
 - Preserve acessibilidade, responsividade e `prefers-reduced-motion`.
 - Dados e telas são exemplos. Use somente exemplos de mídia, briefings, produção e canais. Não reintroduzir propostas anteriores.
-- Não sincronize ou altere o aplicativo C# sem autorização.
+- Não altere o repositório operacional (`horus`) fora do escopo autorizado da tarefa; a referência de tokens e componentes é `frontend/src/styles/tokens.css` e `frontend/src/components/`.
 - Para alterações de código/interface, execute `npm run build`, `npm run lint` e `npm run build-storybook` quando o ambiente permitir. Para documentação, confira diff, formatação e links, sem suites sem relação com a mudança.
 - Não invente resultados de testes ou verificações visuais.
 - Não escolha licença. Preserve as licenças das fontes.
