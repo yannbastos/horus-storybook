@@ -8,7 +8,7 @@ Catálogo independente em React, TypeScript e Storybook para explorar identidade
 
 Este é um laboratório de interface, não o aplicativo operacional. As histórias apresentam exemplos de produções, fila e briefing audiovisual com dados fictícios. Elas servem como referência de design; não há Radar, produção, Hermes ou analytics conectados aqui.
 
-O desktop principal usa React/TypeScript e Tauri 2 com backend FastAPI/SQLite. O Avalonia permanece para transcrição durante a migração. Este catálogo é separado da interface operacional.
+O desktop principal usa React/TypeScript e Tauri 2 com backend FastAPI/SQLite (o legado C#/Avalonia foi removido em `cd365b1`). A referência visual canônica é `frontend/src/styles/tokens.css` e os componentes React do aplicativo. Este catálogo é separado da interface operacional.
 
 A produção será executada pela [fábrica Python independente](https://github.com/yannbastos/fabrica-canais). O catálogo não executa operações reais nem contém backend de produção.
 
@@ -48,7 +48,7 @@ O catálogo estático fica em `storybook-static/`. `npm run dev` abre o protóti
 2. Ajustar componentes e documentar decisões aprovadas.
 3. Adaptar explicitamente à interface React do aplicativo; não há sincronização automática.
 
-A paleta inicial em `src/horus/tokens.css` foi extraída de `HORUS App/src/Horus/Theme/Tokens.axaml`. Depois disso, mudanças não são sincronizadas automaticamente. O AXAML continua sendo a fonte dos tokens do app; este catálogo é o ambiente de experimentação.
+Os tokens em `src/horus/tokens.css` seguem a referência canônica de `frontend/src/styles/tokens.css` e dos componentes React do aplicativo principal (o legado C#/Avalonia foi removido em `cd365b1`). Mudanças não são sincronizadas automaticamente entre os repositórios; este catálogo é o ambiente de experimentação e documentação do design system.
 
 Archivo Expanded e Geist Mono reutilizam os arquivos do próprio projeto, com licenças SIL OFL em `public/fonts/`. Inter é servido localmente pelo pacote `@fontsource/inter`. O movimento respeita `prefers-reduced-motion`.
 
@@ -56,7 +56,7 @@ Archivo Expanded e Geist Mono reutilizam os arquivos do próprio projeto, com li
 
 A configuração global de npm desta máquina aponta para um registro corporativo e contém `allow-scripts`, incompatível com instalações locais no npm 11. A instalação foi feita com um arquivo temporário de configuração contendo apenas `registry=https://registry.npmjs.org`, sem alterar a configuração global. Se `npm ci` falhar nesse ambiente, use `npm ci --userconfig <caminho-de-um-npmrc-limpo>`.
 
-A auditoria inicial apontou quatro avisos moderados na cadeia de desenvolvimento do Storybook (`glob`/`minimatch`). A correção automática sugerida regride a versão principal do Storybook, por isso não foi aplicada. Não há dependências dessa cadeia no executável C#.
+A auditoria inicial apontou quatro avisos moderados na cadeia de desenvolvimento do Storybook (`glob`/`minimatch`). A correção automática sugerida regride a versão principal do Storybook, por isso não foi aplicada. Não há dependências dessa cadeia no aplicativo operacional React/Tauri/FastAPI.
 
 ## Repositórios
 
