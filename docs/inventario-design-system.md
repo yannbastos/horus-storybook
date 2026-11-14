@@ -85,6 +85,23 @@ Na **Central de Produção**, **Roteiro**, **Narração** e **Revisão**, a inte
 5. **`DataTable` (`.data-table-container` + `.data-table`)**:
    - Tabela operacional usada para vídeos na Central de Produção, artefatos verificados por SHA-256 e comparação de execuções, cobrindo `loading`, `error`, `empty` e `success`.
 
+### 3.3. Incremento 2 — Componentes do Fluxo de Produção e Revisão (4 estados) e Alinhamento Tipográfico
+
+No segundo incremento (`FlowComponents.tsx` / `FlowComponents.stories.tsx`), todas as divergências tipográficas e de escala apontadas na seção 2.2 foram resolvidas adotando a fonte do app (`@fontsource/inter/latin-400.css` e `latin-600.css`, `h1`–`h4` em `--InkStrong` com escala `26px`/`21px`/`17px`, `.eyebrow` `10px/1.2` com `letter-spacing: 1.2px`, `.tag` `9px/1.45` e `.button` `min-height: 36px`), e foram adicionadas stories nos 4 estados (`loading`, `error`, `empty`, `success`) para os 6 componentes restantes do fluxo:
+
+1. **Editor de Roteiro (`ScriptEditorPanel`)**:
+   - Seção com cabeçalho, narração, direção visual, fontes vinculadas, contadores de palavras/caracteres e validação acionável (`422`).
+2. **Linha de Voz com Prévia (`VoicePreviewRowPanel`)**:
+   - Seleção de voz local (`Kokoro-82M · pf_dora`) com botão `Ouvir amostra`, estado `Gerando amostra…` (`aria-busy`), prévia WAV auditável e tratamento de falha de síntese.
+3. **Painel de Qualidade Técnica — QC (`QualityReportPanelDemo`)**:
+   - Inspeção de `quality-report.json` com checks `fail`, `warn` e `pass`, explicação em linguagem simples por check, método (`measured`) e botões de navegação por timecode.
+4. **Painel de Licenças e Proveniência (`LicenseProvenancePanelDemo`)**:
+   - Tabela de assets de `asset-provenance.json` (`local_tts_model`, `original_local`) com licença declarada, uso comercial (`allowed`/`unknown`), status (`verified`/`rejected`) e trilha humana.
+5. **Progresso da Produção (`ProductionProgressPanelDemo`)**:
+   - Trilha horizontal das 7 etapas (`Preparação`, `Narração`, `Cenas`, `Legendas`, `Render`, `Qualidade (QC)`, `Revisão`) com tempo decorrido e último evento do job.
+6. **Bloco de Diagnóstico de Falha (`FailureDiagnosticsPanelDemo`)**:
+   - Alerta acionável com `<details className="failure-diagnostics">`, metadados (`stage`, `code`, `duration`, `exit_code`), `stderr_tail` em `.logs` e cópia para a área de transferência.
+
 ---
 
 ## 4. Problemas de Acessibilidade Identificados e Endereçados
