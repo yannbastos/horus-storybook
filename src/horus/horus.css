@@ -202,7 +202,21 @@ progress { display: block; width: 100%; height: 5px; margin-top: 8px; }
 .production-notice.interrupted { border-left: 3px solid var(--Warn); }
 .token-scale-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--Space5); }
 .space-bar { height: 10px; background: var(--AccentInk); border: 1px solid var(--LineStrong); }
-@media(max-width:900px) { .compare-grid, .form-row { grid-template-columns: 1fr; } }
+.player video { display: block; width: 100%; max-height: 480px; background: var(--Sunken); border: 1px solid var(--Line); }
+.player-header-info { display: flex; flex-direction: column; gap: var(--Space3); min-width: 0; }
+.player-header-info h3 { overflow-wrap: anywhere; }
+.player-controls-bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--Space5); padding-top: var(--Space2); border-top: 1px solid var(--Line); }
+.player-rate-label { flex-direction: row; align-items: center; gap: var(--Space3); width: auto; }
+.player-rate-label select { width: auto; min-width: 78px; min-height: var(--Space12); padding: 6px var(--Space4); }
+.player-caption-box { padding: var(--Space4) var(--Space6); background: var(--Sunken); border: 1px solid var(--Line); border-left: 3px solid var(--AccentInk); display: flex; flex-direction: column; gap: var(--Space2); }
+.player-footer-meta { padding-top: var(--Space2); border-top: 1px solid var(--Line); }
+.library-toolbar { gap: var(--Space6); }
+.library-filters-row { display: grid; grid-template-columns: minmax(200px, 1.4fr) auto minmax(160px, 0.8fr); gap: var(--Space6); align-items: end; }
+.library-type-group { display: flex; flex-wrap: wrap; gap: var(--Space2); }
+.media-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--Space5); }
+.media-item { text-align: left; color: var(--Ink); cursor: pointer; }
+.media-item:hover, .media-item.selected { border-color: var(--AccentInk); }
+@media(max-width:900px) { .compare-grid, .form-row, .library-filters-row { grid-template-columns: 1fr; } }
 @media(max-width:1000px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media(max-width:640px) {
   .page { padding: 16px; }

@@ -1337,3 +1337,156 @@ export function ProductionExportPanelDemo({ state = 'success' }: { state?: Opera
     </section>
   );
 }
+
+export function MediaLibraryPlayerDemo({ state = 'success' }: { state?: OperationalState }) {
+  return (
+    <section
+      className="card"
+      role="region"
+      aria-label={`Biblioteca de mídia e player acessível (${state})`}
+    >
+      <div className="row spread">
+        <div>
+          <span className="eyebrow accent">BIBLIOTECA DE MÍDIA E PLAYER LOCAL (HOR-019)</span>
+          <h3>Busca, filtro por tipo (vídeo/áudio), metadados e player com legenda</h3>
+        </div>
+        <Tag
+          tone={
+            state === 'success'
+              ? 'good'
+              : state === 'error'
+                ? 'bad'
+                : state === 'loading'
+                  ? 'warn'
+                  : 'neutral'
+          }
+        >
+          {state === 'loading'
+            ? 'CARREGANDO /V1/MEDIA'
+            : state === 'error'
+              ? 'ERRO NA LEITURA'
+              : state === 'empty'
+                ? 'SEM ARQUIVOS'
+                : '3 ARQUIVOS · PLAYER ATIVO'}
+        </Tag>
+      </div>
+
+      {state === 'loading' && (
+        <StatusMessage state="loading">Carregando biblioteca de mídia…</StatusMessage>
+      )}
+
+      {state === 'error' && (
+        <div className="stack">
+          <StatusMessage state="error">
+            Não foi possível reproduzir este formato. Tente um MP4 H.264/AAC ou WebM compatível.
+          </StatusMessage>
+          <div className="actions">
+            <Button variant="primary">SELECIONAR VÍDEO</Button>
+            <Button>ATUALIZAR LISTA</Button>
+          </div>
+        </div>
+      )}
+
+      {state === 'empty' && (
+        <div className="empty-state">
+          <Tag>ARQUIVOS LOCAIS</Tag>
+          <h4>Traga a mídia da sua próxima produção.</h4>
+          <p className="muted">
+            Selecione um vídeo para abrir a prévia. No desktop, arquivos registrados ficam
+            disponíveis novamente após reiniciar.
+          </p>
+        </div>
+      )}
+
+      {state === 'success' && (
+        <div className="stack">
+          <div
+            className="card sunken player"
+            role="region"
+            aria-label="Player de mídia: entrevista-principal.mp4"
+          >
+            <div className="row spread">
+              <div className="player-header-info">
+                <div className="row" style={{ flexWrap: 'wrap', gap: '6px' }}>
+                  <Tag>VÍDEO</Tag>
+                  <Tag>MP4</Tag>
+                  <Tag>15.0 MB</Tag>
+                  <Tag>DURAÇÃO 01:24</Tag>
+                  <Tag>1080×1920</Tag>
+                </div>
+                <h4>entrevista-principal.mp4</h4>
+              </div>
+              <Button>FECHAR PRÉVIA</Button>
+            </div>
+
+            <div className="player-caption-box" role="status" aria-live="polite">
+              <span className="eyebrow accent">LEGENDA (legendas-pt.srt)</span>
+              <p>O Hórus valida mídia local, duração e legendas sincronizadas sem enviar dados à nuvem.</p>
+            </div>
+
+            <div className="player-controls-bar" role="group" aria-label="Controles acessíveis do player (demo)">
+              <div className="actions">
+                <Button>PAUSAR</Button>
+                <Button>RETROCEDER 5S</Button>
+                <Button>AVANÇAR 5S</Button>
+                <Button aria-pressed={false}>SILENCIAR</Button>
+                <label className="player-rate-label">
+                  <span>Velocidade de reprodução</span>
+                  <select defaultValue="1">
+                    <option value="1">1x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                  </select>
+                </label>
+              </div>
+              <div className="actions">
+                <Button>CARREGAR LEGENDA (.SRT/.VTT)</Button>
+                <Button variant="primary" aria-pressed={true}>
+                  OCULTAR LEGENDA
+                </Button>
+              </div>
+            </div>
+
+            <div className="row spread player-footer-meta">
+              <span className="eyebrow">TEMPO: 00:18 / 01:24</span>
+              <small className="muted">
+                Atalhos no painel: Espaço/K reproduzir · Setas/J/L ±5s · M silenciar
+              </small>
+            </div>
+          </div>
+
+          <div className="card sunken library-toolbar" role="region" aria-label="Busca e filtros da biblioteca (demo)">
+            <div className="library-filters-row">
+              <label>
+                Buscar por nome ou formato
+                <input
+                  type="search"
+                  defaultValue=""
+                  placeholder="Ex.: entrevista, .mp4, .wav…"
+                />
+              </label>
+              <div className="library-type-group" role="group" aria-label="Filtrar por tipo de mídia (demo)">
+                <Button variant="primary" aria-pressed={true}>
+                  TODOS (3)
+                </Button>
+                <Button aria-pressed={false}>VÍDEO (2)</Button>
+                <Button aria-pressed={false}>ÁUDIO (1)</Button>
+              </div>
+              <label>
+                Ordenar por
+                <select defaultValue="name_asc">
+                  <option value="name_asc">Nome (A–Z)</option>
+                  <option value="size_desc">Maior tamanho</option>
+                  <option value="size_asc">Menor tamanho</option>
+                </select>
+              </label>
+            </div>
+            <StatusMessage state="empty" role="status">
+              Exibindo 3 de 3 arquivo(s) · Total: 18.5 MB
+            </StatusMessage>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
