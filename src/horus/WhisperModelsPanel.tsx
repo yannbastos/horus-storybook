@@ -4,6 +4,9 @@ import { StatusMessage } from './Horus';
 export type WhisperModelsStoryState =
   | 'ready-cuda'
   | 'missing-cuda-unavailable'
+  | 'download-preview'
+  | 'download-progress'
+  | 'download-error'
   | 'import-error'
   | 'disconnected';
 
@@ -52,6 +55,13 @@ export function WhisperModelsPanelPreview({ state }: { state: WhisperModelsStory
   const [importingModel, setImportingModel] = useState<string | null>(null);
   const [sourceDir, setSourceDir] = useState('C:\\modelos\\whisper-small');
   const [confirmLicense, setConfirmLicense] = useState(false);
+  const [previewModel, setPreviewModel] = useState<string | null>(
+    state === 'download-preview' ? 'small' : null
+  );
+  const [confirmDownload, setConfirmDownload] = useState(false);
+  const [downloadingModel, setDownloadingModel] = useState<string | null>(
+    state === 'download-progress' ? 'small' : null
+  );
   const [confirmDeleteModel, setConfirmDeleteModel] = useState<string | null>(null);
   const [deleteChecked, setDeleteChecked] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; text: string } | null>(
@@ -60,7 +70,12 @@ export function WhisperModelsPanelPreview({ state }: { state: WhisperModelsStory
           kind: 'error',
           text: 'Pasta de modelo inválida (Missing model.bin in source directory). Selecione uma pasta com os arquivos completos do modelo Whisper.',
         }
-      : null
+      : state === 'download-error'
+        ? {
+            kind: 'error',
+            text: 'Falha no download do modelo "small": Checksum SHA-256 divergente. Verifique sua conexão ou tente a importação de pasta local.',
+          }
+        : null
   );
 
   const isConnected = state !== 'disconnected';
@@ -86,6 +101,31 @@ export function WhisperModelsPanelPreview({ state }: { state: WhisperModelsStory
     setImportingModel(null);
     setConfirmLicense(false);
     setFeedback({ kind: 'success', text: `Modelo "${modelName}" importado e validado com licença MIT.` });
+  }
+
+  function handleConfirmDownload(modelName: string) {
+    if (!confirmDownload) return;
+    setPreviewModel(null);
+    setConfirmDownload(false);
+    setModels(prev =>
+      prev.map(item =>
+        item.model === modelName
+          ? {
+              ...item,
+              installed: true,
+              managed: true,
+              sizeLabel: '485 MB',
+              licenseLabel: 'MIT · Verificada · model card presente',
+              sourceName: 'huggingface.co',
+              removable: true,
+            }
+          : item
+      )
+    );
+    setFeedback({
+      kind: 'success',
+      text: `Modelo "${modelName}" baixado, verificação concluída (SHA-256 validado) e pronto para uso local.`,
+    });
   }
 
   function handleDelete(modelName: string) {
@@ -179,9 +219,26 @@ export function WhisperModelsPanelPreview({ state }: { state: WhisperModelsStory
                     {!item.installed && (
                       <button
                         type="button"
-                        className="button"
+                        className="button primary"
+                        disabled={downloadingModel !== null}
                         onClick={() => {
                           setConfirmDeleteModel(null);
+                          setImportingModel(null);
+                          setPreviewModel(item.model);
+                          setConfirmDownload(false);
+                        }}
+                      >
+                        BAIXAR MODELO
+                      </button>
+                    )}
+                    {!item.installed && (
+                      <button
+                        type="button"
+                        className="button"
+                        disabled={downloadingModel !== null}
+                        onClick={() => {
+                          setConfirmDeleteModel(null);
+                          setPreviewModel(null);
                           setImportingModel(item.model);
                           setConfirmLicense(false);
                         }}
@@ -208,6 +265,72 @@ export function WhisperModelsPanelPreview({ state }: { state: WhisperModelsStory
                   Tamanho: {item.sizeLabel} · Licença: {item.licenseLabel}
                   {item.sourceName ? ` · Origem: ${item.sourceName}` : ''}
                 </p>
+
+                {previewModel === item.model && (
+                  <div className="card" role="region" aria-label={`Prévia de download do modelo ${item.model}`}>
+                    <p className="eyebrow">PRÉVIA OBRIGATÓRIA DE DOWNLOAD · {item.model.toUpperCase()}</p>
+                    <p><strong>Modelo:</strong> {item.model}</p>
+                    <p><strong>Tamanho:</strong> 485 MB</p>
+                    <p><strong>Origem / Host:</strong> huggingface.co</p>
+                    <p>
+                      <strong>Licença:</strong>{' '}
+                      <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noreferrer noopener">
+                        MIT (ver licença)
+                      </a>
+                    </p>
+                    <p><strong>Destino:</strong> Dados locais do Hórus / whisper / {item.model}</p>
+                    <label style={{ display: 'flex', alignItems: 'flex-start', gap: 8, flexDirection: 'row' }}>
+                      <input
+                        type="checkbox"
+                        checked={confirmDownload}
+                        onChange={e => setConfirmDownload(e.target.checked)}
+                        style={{ width: 'auto', marginTop: 3 }}
+                      />
+                      <span>
+                        Confirmo o download explícito deste modelo a partir de huggingface.co sob licença MIT para o destino local indicado.
+                      </span>
+                    </label>
+                    <div className="actions">
+                      <button
+                        type="button"
+                        className="button primary"
+                        disabled={!confirmDownload}
+                        onClick={() => handleConfirmDownload(item.model)}
+                      >
+                        CONFIRMAR DOWNLOAD
+                      </button>
+                      <button type="button" className="button" onClick={() => setPreviewModel(null)}>
+                        CANCELAR
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {downloadingModel === item.model && (
+                  <div className="card" role="region" aria-label={`Progresso do download do modelo ${item.model}`}>
+                    <p className="eyebrow">BAIXANDO MODELO · {item.model.toUpperCase()}</p>
+                    <StatusMessage state="loading" ariaLive="polite">
+                      Baixando arquivos do modelo… (45%)
+                    </StatusMessage>
+                    <progress
+                      aria-label={`Progresso do download do modelo ${item.model}`}
+                      max={100}
+                      value={45}
+                    />
+                    <div className="actions">
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={() => {
+                          setDownloadingModel(null);
+                          setFeedback({ kind: 'error', text: `Download do modelo "${item.model}" cancelado.` });
+                        }}
+                      >
+                        CANCELAR DOWNLOAD
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {importingModel === item.model && (
                   <div className="card">
