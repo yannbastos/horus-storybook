@@ -33,7 +33,7 @@
   --ShadowNone: none;
   --FocusRingWidth: 2px;
   --FocusRingOffset: 3px;
-  --FocusRingColor: var(--AccentInk);
+  /* --FocusRingColor: definido por tema; o foco usa --AccentInk do tema ativo quando ausente. */
   --MotionFast: 140ms;
   --MotionBase: 180ms;
   --MotionEase: ease;

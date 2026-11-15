@@ -64,7 +64,7 @@ button, input, select, textarea { font: inherit; }
 .button.active { color: var(--AccentInk); border-color: var(--AccentInk); background: var(--Sunken); }
 .button:disabled { opacity: .55; cursor: not-allowed; }
 .button[aria-busy="true"] { cursor: progress; opacity: .78; }
-:focus-visible { outline: var(--FocusRingWidth) solid var(--FocusRingColor); outline-offset: var(--FocusRingOffset); }
+:focus-visible { outline: var(--FocusRingWidth) solid var(--FocusRingColor, var(--AccentInk)); outline-offset: var(--FocusRingOffset); }
 .tag {
   display: inline-block;
   width: fit-content;
