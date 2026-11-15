@@ -26,6 +26,18 @@
   --Space10: 28px;
   --Space11: 32px;
   --Space12: 36px;
+
+  /* Geometria, sombra, foco e movimento */
+  --RadiusNone: 0px;
+  --RadiusFull: 9999px;
+  --ShadowNone: none;
+  --FocusRingWidth: 2px;
+  --FocusRingOffset: 3px;
+  --FocusRingColor: var(--AccentInk);
+  --MotionFast: 140ms;
+  --MotionBase: 180ms;
+  --MotionEase: ease;
+  --MotionTransition: 140ms ease;
 }
 
 [data-theme="dark"] {
