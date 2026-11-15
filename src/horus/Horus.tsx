@@ -19,6 +19,8 @@ export interface StatusMessageProps {
   tone?: 'muted' | 'good' | 'plain';
   /** Estilo inline opcional quando necessário para espaçamento local. */
   style?: CSSProperties;
+  /** Rótulo de acessibilidade opcional (aria-label). */
+  ariaLabel?: string;
   /** Identificador de teste opcional. */
   testId?: string;
   /** Conteúdo textual ou elementos filhos da mensagem de estado. */
@@ -36,6 +38,7 @@ export function StatusMessage({
   ariaLive,
   tone = 'muted',
   style,
+  ariaLabel,
   testId,
   children,
 }: StatusMessageProps) {
@@ -60,6 +63,7 @@ export function StatusMessage({
         className="fact-item"
         role={resolvedRole}
         aria-live={resolvedAriaLive}
+        aria-label={ariaLabel}
         style={style}
         data-testid={testId}
       >
@@ -74,6 +78,7 @@ export function StatusMessage({
       className={className}
       role={resolvedRole}
       aria-live={resolvedAriaLive}
+      aria-label={ariaLabel}
       style={style}
       data-testid={testId}
     >
@@ -84,17 +89,37 @@ export function StatusMessage({
 
 export function Button({
   variant = 'secondary',
+  size = 'md',
   active = false,
+  loading = false,
+  disabled,
+  className = '',
+  children,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'md' | 'sm';
   active?: boolean;
+  loading?: boolean;
 }) {
+  const classes = [
+    'button',
+    variant,
+    size === 'sm' ? 'sm' : '',
+    active ? 'active' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <button
-      className={`button ${variant}${active ? ' active' : ''}`}
+      className={classes}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 }
 

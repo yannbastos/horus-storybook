@@ -162,3 +162,33 @@ Como a identidade visual já possui paleta semântica consolidada em `tokens.css
    - Manter `.tag.{good,warn,bad,simulated,demo}`, `.fact-item`, `.info-block`, `.summary-banner.{allowed,blocked}`, `.blocker-item.{critical,warning}` e `.data-table` com a mesma assinatura de classes CSS nos dois repositórios.
 3. **Verificação automatizada de paridade de `tokens.css`**:
    - Manter `src/horus/tokens.css` do Storybook idêntico a `frontend/src/styles/tokens.css` do aplicativo principal.
+
+---
+
+## 6. Auditoria v2 (HOR-135): Tokens completos, valores soltos e divergências
+
+### 6.1. Auditoria de Tokens (`tokens.css` × `app.css` × `horus.css`)
+
+| Categoria | Estado anterior | Padronização v2 (`tokens.css`) |
+|---|---|---|
+| **Cor** | 14 tokens semânticos idênticos nos temas `dark` e `light` | Mantidos 100%; 0 cores hex/rgba soltas no Storybook e no `horus/frontend` (`#123`/`#125` em `TimecodeReviewWorkspace.tsx` são identificadores de cena, não cores) |
+| **Tipografia (`--Font*`, `--Text*`)** | `--FontDisplay`, `--FontSans`, `--FontMono` e `--TextXs`..`--TextH1` declarados, porém com literais `px` e `font-family: Geist, monospace` / `Inter, sans-serif` em `app.css`, `horus.css` e estilos inline (`fontSize: '10px'`/`'11px'`/`12`) | Substituição progressiva por `var(--Font*)` e `var(--Text*)` |
+| **Espaçamento (`--Space*`)** | `--Space1` (4px) .. `--Space12` (36px) declarados; `app.css` tinha ~210 linhas com `px`, `narration.css` 8 linhas, `horus.css` ~116 linhas, além de estilos inline (`gap`, `marginTop`, `padding`) | Substituição por `var(--Space*)` e classes utilitárias/estruturais |
+| **Raio** | Ausente de `tokens.css`; literais `border-radius: 0` e `50%` | Formalizados `--RadiusNone: 0px` e `--RadiusFull: 9999px` |
+| **Sombra** | Ausente de `tokens.css`; `box-shadow` apenas em transição de input no `app.css` | Formalizado `--ShadowNone: none` |
+| **Foco** | Ausente de `tokens.css`; literal `outline: 2px solid var(--AccentInk); outline-offset: 3px` | Formalizados `--FocusRingWidth: 2px`, `--FocusRingOffset: 3px`, `--FocusRingColor: var(--AccentInk)` |
+| **Movimento** | Ausente de `tokens.css`; literais `.14s ease` e `.18s` | Formalizados `--MotionFast: 140ms`, `--MotionBase: 180ms`, `--MotionEase: ease`, `--MotionTransition: 140ms ease` (desativados sob `prefers-reduced-motion: reduce`) |
+
+### 6.2. Valores soltos e padrões repetidos levantados
+
+- **Botão compacto repetido inline**: `style={{ padding: '4px 10px', minHeight: '28px', fontSize: '10px' }}` duplicado em `ProductionCompare.tsx`, `QualityReportPanel.tsx`, `ScriptEditor.tsx`, `ScriptReview.tsx`, `FlowComponents.tsx` e `Horus.tsx` → padronizado como `.button.sm`.
+- **Estilos inline de fonte**: `fontFamily: 'Geist, monospace', fontSize: '11px'` em `AssetProvenancePanel.tsx` e `AssetReviewForm.tsx` → substituir por classe CSS com `var(--FontMono)` e `var(--TextCode)`.
+- **Espaçamentos inline repetidos**: `gap: 8/10/12/14/16`, `marginTop: '4px'/'8px'/'12px'` em telas (`EditorialWorkflows`, `PrivacySecurity`, `ProductionExportPanel`, `ScriptReview`, `Settings`, `WhisperModelsPanel`, `ReadinessPanel`).
+
+### 6.3. Componentes duplicados ou divergentes (`horus` × `horus-storybook`)
+
+1. **`StatusMessage`**: `horus/frontend/src/components/StatusMessage.tsx` possuía prop `ariaLabel` ausente no `Horus.tsx` do Storybook → alinhado 1:1.
+2. **`Button`**: `app.css` e `Horus.tsx` não tinham variantes `.button.danger`, `.button.sm` nem estado `loading` (`aria-busy="true"`) padronizados → adicionados ao Design System v2.
+3. **Campos de formulário, Listas, Abas e Diálogos**: existiam apenas como estilos locais dispersos (`label`, `.queue`, `.settings-tabs`, sem diálogo modal padronizado) → padronizados em `DesignSystem.tsx`, `DesignSystem.stories.tsx` e `DesignSystem.mdx`.
+4. **Painéis espelhados**: `ReadinessPanel`, `WhisperModelsPanel`, `SecurityWidgets` e `Sections` possuem cópias de catálogo no Storybook com dados fictícios (mantidos isolados do backend por fronteira arquitetural).
+

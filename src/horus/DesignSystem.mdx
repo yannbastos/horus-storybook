@@ -1,0 +1,84 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Documentação/Guia de Uso do Design System" />
+
+# Guia de Uso do Design System — Hórus
+
+O Design System do **Hórus** prioriza legibilidade técnica, geometria ortogonal (`--RadiusNone: 0px`), zero sombras decorativas (`--ShadowNone: none`) e alto contraste nos temas **escuro** (`[data-theme="dark"]`) e **claro** (`[data-theme="light"]`).
+
+---
+
+## 1. Tokens Canônicos (`tokens.css`)
+
+| Categoria | Tokens Principais | Uso |
+|---|---|---|
+| **Cor** | `--Background`, `--Sunken`, `--Ink`, `--InkStrong`, `--Muted`, `--Faint`, `--Line`, `--LineStrong`, `--AccentInk`, `--InvertBackground`, `--InvertForeground`, `--Good`, `--Warn`, `--Bad` | Nunca use hex ou `rgb()` soltos em componentes; escolha sempre o token semântico. |
+| **Tipografia** | `--FontDisplay` (`Archivo`), `--FontSans` (`Inter`), `--FontMono` (`Geist`), `--TextXs` (9px) até `--TextH1` (26px) | Use `--FontDisplay` em títulos, `--FontSans` em leitura contínua e `--FontMono` em rótulos `.eyebrow`, botões, tags, hashes e timecodes. |
+| **Espaçamento** | `--Space1` (4px) até `--Space12` (36px) | Padronize `gap`, `padding` e `margin` pela escala; evite `px` arbitrários. |
+| **Raio** | `--RadiusNone` (`0px`), `--RadiusFull` (`9999px`) | Controles e cartões usam cantos retos (`--RadiusNone`). `--RadiusFull` aplica-se apenas a `.status-dot`. |
+| **Sombra** | `--ShadowNone` (`none`) | Separação visual por borda (`1px solid var(--Line)`) e contraste de superfície (`--Background` vs `--Sunken`). |
+| **Foco** | `--FocusRingWidth` (`2px`), `--FocusRingOffset` (`3px`), `--FocusRingColor` (`var(--AccentInk)`) | Todo elemento interativo deve preservar `:focus-visible` visível. |
+| **Movimento** | `--MotionFast` (`140ms`), `--MotionBase` (`180ms`), `--MotionEase` (`ease`), `--MotionTransition` (`140ms ease`) | Transições curtas e desativadas integralmente sob `prefers-reduced-motion: reduce`. |
+
+---
+
+## 2. Quando usar / Quando não usar cada componente
+
+### Botões (`.button`)
+- **Quando usar**:
+  - `primary`: ação principal e única de uma seção ou diálogo (ex.: `Produzir vídeo`, `Salvar roteiro`).
+  - `secondary`: ações de apoio, navegação de ação ou cancelar (ex.: `Ouvir amostra`, `Voltar`).
+  - `danger`: ações destrutivas ou irreversíveis (ex.: `Excluir produção`, `Remover modelo`).
+  - `sm`: ações secundárias compactas dentro de tabelas, painéis `fact-item` ou navegação por timecode.
+  - `loading` (`aria-busy="true"` + `disabled`): durante operações assíncronas para evitar duplo envio.
+- **Quando não usar**:
+  - Não use múltiplos botões `primary` competindo no mesmo grupo de ações.
+  - Não use botão `danger` para cancelamentos simples de formulário — use `secondary`.
+  - Não use `<a>` estilizado como botão para navegação interna; prefira `button` ou abas.
+
+### Campos de Formulário (`.field`)
+- **Quando usar**:
+  - Sempre associe `<label htmlFor="...">` ao controle (`input`, `select`, `textarea`).
+  - Use `help` (`aria-describedby`) para restrições de formato ou limites locais.
+  - Use `error` (`role="alert"` + `aria-invalid="true"`) para feedback de validação acionável.
+- **Quando não usar**:
+  - Não dependa apenas de `placeholder` como substituto de rótulo (`label`).
+  - Não remova o contorno de erro apenas pela cor; mantenha texto explícito abaixo do campo.
+
+### Cartões e Painéis (`.card`, `.fact-item`, `.info-block`)
+- **Quando usar**:
+  - `.card`: agrupamento principal de uma seção ou fluxo com cabeçalho (`eyebrow` + `h3`) e ações.
+  - `.fact-item` / `.info-block`: blocos técnicos compactos sobre fundo `--Sunken` para metadados, hashes SHA-256 ou resumos.
+- **Quando não usar**:
+  - Não aninhe múltiplos `.card` sem necessidade; dentro de um `.card`, use `.fact-item` ou `.list-group`.
+
+### Listas (`.list-group`, `.list-item`)
+- **Quando usar**:
+  - Listas operacionais com título, metadados, badge de status e seleção explícita (ex.: fila de transcrição, versões, itens de revisão).
+- **Quando não usar**:
+  - Para dados tabulares com múltiplas colunas comparáveis, use `.data-table`.
+
+### Abas (`.tabs`, `.tab`)
+- **Quando usar**:
+  - Alternar visões irmãs no mesmo contexto sem sair da página (ex.: Configurações, Inspeção de Qualidade/Licenças), com suporte completo a teclado (`ArrowLeft`, `ArrowRight`, `Home`, `End`).
+- **Quando não usar**:
+  - Não use abas para etapas sequenciais obrigatórias; use `.steps` ou o `FirstVideoGuide`.
+
+### Diálogos (`.dialog`)
+- **Quando usar**:
+  - Confirmações explícitas de aprovação humana, exportação ou ações destrutivas (`role="dialog"`, `aria-modal="true"`, fechamento com `Escape`).
+- **Quando não usar**:
+  - Não use diálogo modal para notificações passivas ou progresso; use `StatusMessage` ou `.production-notice`.
+
+### Tags e Badges (`.tag`, `.status-badge`)
+- **Quando usar**:
+  - Rótulos curtos e escaneáveis de estado (`good`, `warn`, `bad`, `simulated`, `demo`, `neutral`), combinados com `.status-dot` ou texto claro.
+- **Quando não usar**:
+  - Não use `.tag` como botão clicável; para filtros clicáveis, use `.button` com `aria-pressed` ou `.active`.
+
+### StatusMessage (`StatusMessage`)
+- **Quando usar**:
+  - Mensagem canônica para os 4 estados operacionais: `loading` (`role="status"` + `aria-live="polite"`), `error` (`role="alert"`), `empty` e `success`.
+  - Use a variante com `eyebrow` quando a mensagem precisar de destaque estruturado em bloco (`.fact-item`).
+- **Quando não usar**:
+  - Não substitua erros de campo individual de formulário por `StatusMessage` genérico no topo da página; mantenha o erro junto ao campo.
