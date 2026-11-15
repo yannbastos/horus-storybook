@@ -5,6 +5,9 @@ import type { WhisperModelsStoryState } from './WhisperModelsPanel';
 const STATES: WhisperModelsStoryState[] = [
   'ready-cuda',
   'missing-cuda-unavailable',
+  'download-preview',
+  'download-progress',
+  'download-error',
   'import-error',
   'disconnected',
 ];
@@ -45,12 +48,27 @@ export const CudaIndisponivel: StoryObj<typeof meta> = {
   args: { state: 'missing-cuda-unavailable' },
 };
 
+export const DownloadPreviaObrigatoria: StoryObj<typeof meta> = {
+  name: '3. Prévia obrigatória de download',
+  args: { state: 'download-preview' },
+};
+
+export const DownloadEmAndamento: StoryObj<typeof meta> = {
+  name: '4. Download em andamento e cancelar',
+  args: { state: 'download-progress' },
+};
+
+export const ErroDeDownload: StoryObj<typeof meta> = {
+  name: '5. Erro acionável no download',
+  args: { state: 'download-error' },
+};
+
 export const ErroDeImportacao: StoryObj<typeof meta> = {
-  name: '3. Erro acionável na importação',
+  name: '6. Erro acionável na importação',
   args: { state: 'import-error' },
 };
 
 export const Desconectado: StoryObj<typeof meta> = {
-  name: '4. Backend desconectado',
+  name: '7. Backend desconectado',
   args: { state: 'disconnected' },
 };
