@@ -138,7 +138,7 @@ export const CartoesEPaineis: StoryObj = {
           <PanelCard
             key={state}
             eyebrow={`ESTADO · ${state.toUpperCase()}`}
-            title="Prontidão do Piloto"
+            title={`Prontidão do Piloto (${state})`}
             state={state}
             badge={
               state === 'success'

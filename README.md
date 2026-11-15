@@ -32,15 +32,24 @@ Abra http://localhost:6006. A barra superior oferece Sistema, Claro e Escuro. O 
 
 Os dados são fictícios. Busca, filtros, navegação e controles são interações locais de demonstração, sem banco de dados. Os botões não acionam a fábrica ou serviços pagos.
 
-## Verificar e gerar
+## Verificar, testar e gerar
 
 ```powershell
 npm run build
 npm run lint
 npm run build-storybook
+npm test
 ```
 
 O catálogo estático fica em `storybook-static/`. `npm run dev` abre o protótipo navegável fora do Storybook.
+
+`npm test` executa `lint`, `build`, a verificação estática de escopo de variáveis CSS (`npm run test:tokens`), `build-storybook` e a suíte Playwright sobre `storybook-static/` (`npm run test:storybook`), cobrindo:
+
+- **Escopo de tokens CSS (`tests/css-tokens.test.mjs`):** garante que todo `var(--X)` em `src/**/*.css` esteja definido no escopo em que é resolvido (falhando, por exemplo, se `:root` referenciar tokens exclusivos de `[data-theme="light"]`/`[data-theme="dark"]`).
+- **Foco por teclado e contraste (`tests/storybook.test.mjs`):** navega por `Tab` nos componentes interativos de cada story nos temas claro e escuro e exige outline visível com contraste ≥ 3:1 contra o fundo efetivo.
+- **Acessibilidade com axe-core (`tests/storybook.test.mjs`):** executa `axe-core` em todas as stories nos temas claro e escuro.
+
+Se os binários do Chromium do Playwright ainda não estiverem instalados nesta máquina, execute `npx playwright install chromium`.
 
 ## Fluxo de decisão
 
