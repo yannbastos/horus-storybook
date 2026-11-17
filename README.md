@@ -17,7 +17,7 @@ A produção será executada pela [fábrica Python independente](https://github.
 Requer Node.js 24 e npm.
 
 ```powershell
-cd "HORUS Storybook"
+cd horus-storybook
 npm ci
 npm run storybook
 ```
@@ -72,4 +72,4 @@ A auditoria inicial apontou quatro avisos moderados na cadeia de desenvolvimento
 - Catálogo: https://github.com/yannbastos/horus-storybook
 - Aplicativo audiovisual: https://github.com/yannbastos/horus
 
-O catálogo fica separado do aplicativo, na pasta `HORUS Storybook`. Não depende de arquivos externos para executar ou gerar os builds.
+O catálogo fica separado do aplicativo, na pasta `horus-storybook`. Não depende de arquivos externos para executar ou gerar os builds.
