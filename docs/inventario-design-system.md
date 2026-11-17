@@ -176,7 +176,7 @@ Como a identidade visual já possui paleta semântica consolidada em `tokens.css
 | **Espaçamento (`--Space*`)** | `--Space1` (4px) .. `--Space12` (36px) declarados; `app.css` tinha ~210 linhas com `px`, `narration.css` 8 linhas, `horus.css` ~116 linhas, além de estilos inline (`gap`, `marginTop`, `padding`) | Substituição por `var(--Space*)` e classes utilitárias/estruturais |
 | **Raio** | Ausente de `tokens.css`; literais `border-radius: 0` e `50%` | Formalizados `--RadiusNone: 0px` e `--RadiusFull: 9999px` |
 | **Sombra** | Ausente de `tokens.css`; `box-shadow` apenas em transição de input no `app.css` | Formalizado `--ShadowNone: none` |
-| **Foco** | Ausente de `tokens.css`; literal `outline: 2px solid var(--AccentInk); outline-offset: 3px` | Formalizados `--FocusRingWidth: 2px`, `--FocusRingOffset: 3px`, `--FocusRingColor: var(--AccentInk)` |
+| **Foco** | Ausente de `tokens.css`; literal `outline: 2px solid var(--AccentInk); outline-offset: 3px` | Formalizados `--FocusRingWidth: 2px` e `--FocusRingOffset: 3px`; `--FocusRingColor` mantido comentado em `:root` (`tokens.css:36`, definido por tema), com `:focus-visible` usando `var(--FocusRingColor, var(--AccentInk))` |
 | **Movimento** | Ausente de `tokens.css`; literais `.14s ease` e `.18s` | Formalizados `--MotionFast: 140ms`, `--MotionBase: 180ms`, `--MotionEase: ease`, `--MotionTransition: 140ms ease` (desativados sob `prefers-reduced-motion: reduce`) |
 
 ### 6.2. Valores soltos e padrões repetidos levantados
@@ -188,7 +188,7 @@ Como a identidade visual já possui paleta semântica consolidada em `tokens.css
 ### 6.3. Componentes duplicados ou divergentes (`horus` × `horus-storybook`)
 
 1. **`StatusMessage`**: `horus/frontend/src/components/StatusMessage.tsx` possuía prop `ariaLabel` ausente no `Horus.tsx` do Storybook → alinhado 1:1.
-2. **`Button`**: `app.css` e `Horus.tsx` não tinham variantes `.button.danger`, `.button.sm` nem estado `loading` (`aria-busy="true"`) padronizados → adicionados ao Design System v2.
-3. **Campos de formulário, Listas, Abas e Diálogos**: existiam apenas como estilos locais dispersos (`label`, `.queue`, `.settings-tabs`, sem diálogo modal padronizado) → padronizados em `DesignSystem.tsx`, `DesignSystem.stories.tsx` e `DesignSystem.mdx`.
+2. **`Button`**: `app.css` e `Horus.tsx` não tinham variantes `.button.danger`, `.button.sm` nem estado `loading` (`aria-busy="true"`) padronizados → adicionados ao Design System v2. Nota sobre `:disabled`: no Storybook (`src/horus/horus.css:60,63,65`), `.button.primary:disabled`, `.button.danger:disabled` e `.button:disabled` usam `color: var(--Faint)` e `opacity: .55`, enquanto na fonte operacional do app (`horus/frontend/src/styles/app.css:55,58`) `.button.primary:disabled` e `.button.danger:disabled` usam `color: var(--Muted)` e `opacity: .65`.
+3. **Campos de formulário, Listas, Abas e Diálogos**: existiam apenas como estilos locais dispersos (`label`, `.queue`, `.settings-tabs`, sem diálogo modal padronizado) → padronizados no catálogo v2 (`src/horus/horus.css`, `DesignSystem.tsx`, `DesignSystem.stories.tsx` e `DesignSystem.mdx`); essas classes permanecem ausentes na folha operacional atual do app (`horus/frontend/src/styles/app.css`).
 4. **Painéis espelhados**: `ReadinessPanel`, `WhisperModelsPanel`, `SecurityWidgets` e `Sections` possuem cópias de catálogo no Storybook com dados fictícios (mantidos isolados do backend por fronteira arquitetural).
 

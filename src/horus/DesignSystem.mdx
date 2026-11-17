@@ -17,7 +17,7 @@ O Design System do **Hórus** prioriza legibilidade técnica, geometria ortogona
 | **Espaçamento** | `--Space1` (4px) até `--Space12` (36px) | Padronize `gap`, `padding` e `margin` pela escala; evite `px` arbitrários. |
 | **Raio** | `--RadiusNone` (`0px`), `--RadiusFull` (`9999px`) | Controles e cartões usam cantos retos (`--RadiusNone`). `--RadiusFull` aplica-se apenas a `.status-dot`. |
 | **Sombra** | `--ShadowNone` (`none`) | Separação visual por borda (`1px solid var(--Line)`) e contraste de superfície (`--Background` vs `--Sunken`). |
-| **Foco** | `--FocusRingWidth` (`2px`), `--FocusRingOffset` (`3px`), `--FocusRingColor` (`var(--AccentInk)`) | Todo elemento interativo deve preservar `:focus-visible` visível. |
+| **Foco** | `--FocusRingWidth` (`2px`), `--FocusRingOffset` (`3px`); `--FocusRingColor` comentado em `tokens.css` (definido por tema; `:focus-visible` usa `var(--FocusRingColor, var(--AccentInk))`) | Todo elemento interativo deve preservar `:focus-visible` visível. |
 | **Movimento** | `--MotionFast` (`140ms`), `--MotionBase` (`180ms`), `--MotionEase` (`ease`), `--MotionTransition` (`140ms ease`) | Transições curtas e desativadas integralmente sob `prefers-reduced-motion: reduce`. |
 
 ---
@@ -37,6 +37,7 @@ O Design System do **Hórus** prioriza legibilidade técnica, geometria ortogona
   - Não use `<a>` estilizado como botão para navegação interna; prefira `button` ou abas.
 
 ### Campos de Formulário (`.field`)
+*Disponível no catálogo v2 (`src/horus/horus.css`); atualmente ausente na folha operacional do aplicativo (`horus/frontend/src/styles/app.css`).*
 - **Quando usar**:
   - Sempre associe `<label htmlFor="...">` ao controle (`input`, `select`, `textarea`).
   - Use `help` (`aria-describedby`) para restrições de formato ou limites locais.
@@ -53,18 +54,21 @@ O Design System do **Hórus** prioriza legibilidade técnica, geometria ortogona
   - Não aninhe múltiplos `.card` sem necessidade; dentro de um `.card`, use `.fact-item` ou `.list-group`.
 
 ### Listas (`.list-group`, `.list-item`)
+*Disponível no catálogo v2 (`src/horus/horus.css`); atualmente ausente na folha operacional do aplicativo (`horus/frontend/src/styles/app.css`).*
 - **Quando usar**:
   - Listas operacionais com título, metadados, badge de status e seleção explícita (ex.: fila de transcrição, versões, itens de revisão).
 - **Quando não usar**:
   - Para dados tabulares com múltiplas colunas comparáveis, use `.data-table`.
 
 ### Abas (`.tabs`, `.tab`)
+*Disponível no catálogo v2 (`src/horus/horus.css`); atualmente ausente na folha operacional do aplicativo (`horus/frontend/src/styles/app.css`).*
 - **Quando usar**:
   - Alternar visões irmãs no mesmo contexto sem sair da página (ex.: Configurações, Inspeção de Qualidade/Licenças), com suporte completo a teclado (`ArrowLeft`, `ArrowRight`, `Home`, `End`).
 - **Quando não usar**:
   - Não use abas para etapas sequenciais obrigatórias; use `.steps` ou o `FirstVideoGuide`.
 
 ### Diálogos (`.dialog`)
+*Disponível no catálogo v2 (`src/horus/horus.css`); atualmente ausente na folha operacional do aplicativo (`horus/frontend/src/styles/app.css`).*
 - **Quando usar**:
   - Confirmações explícitas de aprovação humana, exportação ou ações destrutivas (`role="dialog"`, `aria-modal="true"`, fechamento com `Escape`).
 - **Quando não usar**:
